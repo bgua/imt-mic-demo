@@ -10,9 +10,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />}>
-          <Route path="machines" element={<Machines />}>
-            <Route path=":machineId" element={<MachineDetail />}></Route>
-          </Route>
+          <Route path="machines" element={<Machines />} />
+          <Route path="machines/:machineId" element={<MachineDetail />}></Route>
         </Route>
         <Route
           path="*"
