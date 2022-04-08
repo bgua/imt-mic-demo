@@ -6,6 +6,8 @@ import { BASE_URL, MACHINES_URL, WS_BASE_URL, WS_ENDPOINT,HTTP_METHOD, MACHINE_T
 import request from '../../utils/request';
 import { dataFilter, dataFilter2Map } from '../../utils/util';
 import { Store as Notification } from 'react-notifications-component';
+import MachineDataTable from '../../components/machine-data-table';
+import { Outlet } from 'react-router-dom';
 
 const images = [
     {
@@ -21,6 +23,7 @@ const ws_url =  `${WS_BASE_URL}${WS_ENDPOINT}`;
 
 export default function Machines() {
     const [machines, setMachines] = useState({});
+    const [table, setTable] = useState(null);
 
     const ws = useRef(null);
 
@@ -79,6 +82,7 @@ export default function Machines() {
         };
     }, []);
 
+
     const machineStatusList = (machine) => {
         let result = [];
         if (!machine) return null;
@@ -87,15 +91,22 @@ export default function Machines() {
             result.push(
                 <li key={item[0]} className="mt-4 font-bold">
                     <span className="capitalize">{`${item[0]} : `}</span>
-                    <span className="ml-2">{item[1].size}</span>
+                    <span className="ml-2 underline text-xl font-bold cursor-pointer" onClick={() => setTable(machine.get(item[0]))}>{item[1].size}</span>
                 </li>
             )
         }
         return result;
     }
 
+    const closeTable = (e) => {
+        console.log("event: ", e);
+        if (table) {
+            setTable(null)
+        }
+    }
+
     return (
-        <div className="h-full flex justify-center items-center">
+        <div className="h-full flex justify-center items-center flex-col" onClick={(e) => closeTable(e)}>
             <div className="flex justify-center items-center ">
                 {
                     images.map(img => {
@@ -111,6 +122,10 @@ export default function Machines() {
                     })
                 }
             </div>
+            {
+                table && <MachineDataTable data={table} />
+            }
+            <Outlet />
         </div>
 
     )
