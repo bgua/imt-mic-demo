@@ -5,6 +5,7 @@ import ImageWrapper from '../../components/image-wrapper';
 import { BASE_URL, MACHINES_URL, WS_BASE_URL, WS_ENDPOINT,HTTP_METHOD, MACHINE_TYPE, MACHINE_STATUS } from '../../utils/constants';
 import request from '../../utils/request';
 import { dataFilter, dataFilter2Map } from '../../utils/util';
+import { Store as Notification } from 'react-notifications-component';
 
 const images = [
     {
@@ -50,6 +51,26 @@ export default function Machines() {
         ws.current.onmessage = (res) => {
             const data = JSON.parse(res.data);
             console.log("res.data: ", data);
+
+            const {machine_id: machineId, status, timestamp} = data.payload;
+
+            Notification.addNotification({
+                title: "New machine status event!",
+                message: <div>
+                    <div>Machine ID: {machineId}</div>
+                    <div>Machine Status: {status}</div>
+                    <div>Event Timestamp: {timestamp}</div>
+                </div>,
+                type: "default",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animate__animated", "animate__bounceIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: {
+                  duration: 4000,
+                  pauseOnHover: true
+                }
+            });
         }
 
         const wsInstance = ws.current;
@@ -80,7 +101,7 @@ export default function Machines() {
                     images.map(img => {
                         const {name} = img;
                         return (
-                            <div key={name} class="text-white">
+                            <div key={name} className="text-white">
                                 <ImageWrapper {...img}  />
                                 <ul className="px-12 py-6">
                                     {machineStatusList(machines[name])}
