@@ -1,3 +1,6 @@
+# 0: Note:
+This task was built at nodejs version 14.17.3 and npm version of 6.14.3
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
