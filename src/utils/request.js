@@ -1,4 +1,6 @@
-const POST='POST', GET='GET'
+import { HTTP_METHOD } from "./constants";
+
+const POST = HTTP_METHOD.POST, GET = HTTP_METHOD.GET;
 
 export default function request(url, option) {
   if (!option) {
